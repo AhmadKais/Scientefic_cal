@@ -40,6 +40,17 @@
     <string name="xPowerYText">x<sup><small>y</small></sup></string>
     <string name="isPrimeFunctionText">prime</string>
 
-    <string name="backspace"> </string>
+    <string name="backspace">Delete the last character</string>
+    <string name="title_activity_limit">LimitActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
+    <string name="enter_expression">Enter expression</string>
+    <string name="lower_limit">Lower limit</string>
+    <string name="upper_limit">Upper limit</string>
+    <string name="solve">Solve</string>
+    <string name="delete_desc">Erase</string>
 </resources>

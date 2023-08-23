@@ -38,8 +38,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="376dp"
+        android:layout_height="491dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,8 +48,8 @@
 
         <ImageButton
             android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_width="85dp"
+            android:layout_height="69dp"
             android:background="@drawable/button_background"
             android:contentDescription="@string/backspace"
             android:onClick="backspaceBTNPush"
