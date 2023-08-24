@@ -7,8 +7,12 @@
     tools:context=".LimitActivity">
 
     <RelativeLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/functionInput"
@@ -23,11 +27,18 @@
             android:layout_below="@id/functionInput"
             android:hint="Enter Point" />
 
+        <EditText
+            android:id="@+id/variableInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pointInput"
+            android:hint="Enter Variable (e.g., x)" />
+
         <Button
             android:id="@+id/calculateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pointInput"
+            android:layout_below="@id/variableInput"
             android:layout_centerHorizontal="true"
             android:onClick="calculateLimit"
             android:text="Calculate" />
@@ -38,7 +49,37 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/calculateButton"
             android:layout_centerHorizontal="true" />
+
+        <RadioGroup
+            android:id="@+id/limitDirectionGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/resultText"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <RadioButton
+                android:id="@+id/radioFromLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From Left" />
+
+            <RadioButton
+                android:id="@+id/radioFromRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From Right" />
+        </RadioGroup>
     </RelativeLayout>
 
+    <!-- Add the LineChart below the RelativeLayout -->
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chartView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toBottomOf="@id/layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
