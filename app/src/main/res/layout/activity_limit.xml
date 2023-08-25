@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/app_background"
     tools:context=".LimitActivity">
 
     <RelativeLayout
@@ -17,31 +18,48 @@
         <EditText
             android:id="@+id/functionInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Function" />
+            android:layout_height="60dp"
+            android:hint="Enter Function"
+            android:textColorHint="@color/greyAccent"
+            android:textSize="30sp"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/pointInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_below="@id/functionInput"
-            android:hint="Enter Point" />
+            android:hint="Enter Point"
+            android:textColorHint="@color/greyAccent"
+            android:textSize="30sp"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/variableInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:layout_below="@id/pointInput"
-            android:hint="Enter Variable (e.g., x)" />
+            android:hint="Enter Variable (e.g., x)"
+            android:textColorHint="@color/greyAccent"
+            android:textSize="30sp"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/calculateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/variableInput"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="146dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="147dp"
+            android:background="@drawable/button_background"
             android:onClick="calculateLimit"
-            android:text="Calculate" />
+            android:text="Calculate"
+            android:textAllCaps="false"
+            android:textColor="@color/tanAccent"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/resultText"
@@ -55,21 +73,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/resultText"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:visibility="visible">
 
             <RadioButton
                 android:id="@+id/radioFromLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="From Left" />
+                android:layout_width="112dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_background"
+                android:text="From Left"
+                android:textAllCaps="false"
+                android:textColor="@color/tanAccent"
+                android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/radioFromRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="From Right" />
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_background"
+                android:text="From Right"
+                android:textAllCaps="false"
+                android:textColor="@color/tanAccent"
+                android:textSize="20sp" />
         </RadioGroup>
     </RelativeLayout>
 
@@ -78,8 +104,10 @@
         android:id="@+id/chartView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        app:layout_constraintTop_toBottomOf="@id/layout"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
