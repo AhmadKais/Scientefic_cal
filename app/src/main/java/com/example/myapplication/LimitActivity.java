@@ -7,12 +7,14 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -76,13 +78,15 @@ public class LimitActivity extends AppCompatActivity {
                     .variable(variable)
                     .build();
 
-            if (fromLeft) {
-                point -= 0.000001; // Adjust to a small value for approaching from the left
-            }
+            double limitFromLeft = calculateLimitFromSide(expression, variable, point - 0.000001);
+            double limitFromRight = calculateLimitFromSide(expression, variable, point + 0.000001);
 
-            expression.setVariable(variable, point);
-            double limit = expression.evaluate();
-            resultText.setText("Limit " + (fromLeft ? "from Left " : "from Right ") + "at " + pointStr + ": " + limit);
+            if (Math.abs(limitFromLeft - limitFromRight) < 1e-6) {
+                resultText.setText("Limit from Left and Right at " + pointStr + ": " + limitFromLeft);
+            } else {
+                resultText.setText("Limit from Left at " + pointStr + ": " + limitFromLeft +
+                        "\nLimit from Right at " + pointStr + ": " + limitFromRight);
+            }
 
             // Create data points for the graph
             List<Entry> entries = new ArrayList<>();
@@ -106,5 +110,10 @@ public class LimitActivity extends AppCompatActivity {
             resultText.setText("Error calculating limit.");
             chart.clear();
         }
+    }
+
+    private double calculateLimitFromSide(Expression expression, String variable, double point) {
+        expression.setVariable(variable, point);
+        return expression.evaluate();
     }
 }

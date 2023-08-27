@@ -17,6 +17,9 @@ public class OpeningActivity extends AppCompatActivity {
         Button goToLimitButton = findViewById(R.id.gotolimit);
         Button goToLimitDerivativeButton = findViewById(R.id.gotoderivative);
         Button goToLimitIntegralButton = findViewById(R.id.gotointegral);
+        Button goToUnitConverter = findViewById(R.id.gotounit);
+
+
 
         goToCalcButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +45,13 @@ public class OpeningActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeActivity(IntegralActivity.class);
+            }
+        });
+
+        goToUnitConverter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(com.example.myapplication.ConverterActivity.class);
             }
         });
     }
