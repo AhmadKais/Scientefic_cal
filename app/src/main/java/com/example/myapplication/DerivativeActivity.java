@@ -1,15 +1,20 @@
 package com.example.myapplication;
 // Import statements
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -22,6 +27,8 @@ public class DerivativeActivity extends AppCompatActivity {
     private LineChart originalChart;
     private LineChart derivativeChart;
 
+    private TextView derivativeTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +37,7 @@ public class DerivativeActivity extends AppCompatActivity {
         functionInput = findViewById(R.id.functionInput);
         originalChart = findViewById(R.id.originalChart);
         derivativeChart = findViewById(R.id.derivativeChart);
+        derivativeTextView = findViewById(R.id.derivativeTextView); // Find the TextView
 
         // Configure the charts
         configureChart(originalChart);
@@ -45,6 +53,7 @@ public class DerivativeActivity extends AppCompatActivity {
         }
 
         try {
+
             Expression expression = new ExpressionBuilder(function)
                     .variable("x")
                     .build();
@@ -52,7 +61,7 @@ public class DerivativeActivity extends AppCompatActivity {
             List<Entry> originalEntries = new ArrayList<>();
             List<Entry> derivativeEntries = new ArrayList<>();
 
-            for (double x = -5.0; x <= 5.0; x += 0.1) {
+            for (double x = -10.0; x <= 10.0; x += 0.1) {
                 expression.setVariable("x", x);
                 originalEntries.add(new Entry((float) x, (float) expression.evaluate()));
 
@@ -61,6 +70,12 @@ public class DerivativeActivity extends AppCompatActivity {
                 derivativeEntries.add(new Entry((float) x, (float) derivative));
             }
 
+            StringBuilder derivativeText = new StringBuilder("Derivative Values:\n");
+            for (Entry entry : derivativeEntries) {
+                derivativeText.append("x = ").append(entry.getX()).append(", f'(x) = ").append(entry.getY()).append("\n");
+            }
+            derivativeTextView.setText(derivativeText.toString());
+
             updateChart(originalChart, originalEntries, "f(x)", Color.BLUE);
             updateChart(derivativeChart, derivativeEntries, "f'(x)", Color.GREEN);
 
@@ -68,6 +83,7 @@ public class DerivativeActivity extends AppCompatActivity {
             clearCharts();
         }
     }
+
 
     private void configureChart(LineChart chart) {
         chart.setTouchEnabled(true);

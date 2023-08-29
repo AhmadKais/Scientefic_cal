@@ -49,7 +49,7 @@ public class IntegralActivity extends AppCompatActivity {
     }
 
     public void calculateIntegral(View view) {
-        String function = functionInput.getText().toString();
+        String function = functionInput.getText().toString().trim();
         String lowerLimitStr = lowerLimitInput.getText().toString();
         String upperLimitStr = upperLimitInput.getText().toString();
 
@@ -69,12 +69,15 @@ public class IntegralActivity extends AppCompatActivity {
 
             List<Entry> integralEntries = new ArrayList<>();
             double integralValue = 0;
-            double stepSize = 0.1; // Change this as needed
-            for (double x = lowerLimit; x <= upperLimit; x += stepSize) {
+            double stepSize = 0.01;
+            double previousY = expression.setVariable("x", lowerLimit).evaluate();
+            integralValue += previousY * stepSize / 2.0;
+            for (double x = lowerLimit + stepSize; x <= upperLimit; x += stepSize) {
                 expression.setVariable("x", x);
-                double y = expression.evaluate();
-                integralEntries.add(new Entry((float) x, (float) y));
-                integralValue += y * stepSize;
+                double currentY = expression.evaluate();
+                integralValue += (previousY + currentY) * stepSize / 2.0;
+                integralEntries.add(new Entry((float) x, (float) currentY));
+                previousY = currentY;
             }
 
             LineDataSet dataSet = new LineDataSet(integralEntries, "Integral");
@@ -86,11 +89,21 @@ public class IntegralActivity extends AppCompatActivity {
             chart.setData(lineData);
             chart.invalidate();
 
-            integralValueText.setText("Integral value: " + integralValue);
+            String antiderivative = getAntiderivative(function);
+            integralValueText.setText(String.format("Integral value: %.2f\nF(x) = %s", integralValue, antiderivative));
 
         } catch (Exception e) {
             integralValueText.setText("Invalid input or function.");
             chart.clear();
+        }
+    }
+
+    private String getAntiderivative(String function) {
+        // For now, handle the case for f(x) = x only
+        if (function.equals("x")) {
+            return "(x^2)/2";
+        } else {
+            return "Antiderivative not available for this function"; // Placeholder for other functions
         }
     }
 }
