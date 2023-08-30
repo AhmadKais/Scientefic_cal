@@ -1,66 +1,71 @@
 package com.example.myapplication;
 
-import android.os.AsyncTask;
+import android.content.Context;
+import android.net.Uri;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class WolframAlphaAPI {
 
-    private static final String BASE_URL = "http://api.wolframalpha.com/v2/query";
-    private static final String API_KEY = "KG26JX-3T3LTU3VTP";
+    private static final String BASE_URL = "https://api.wolframalpha.com/v2/query?";
+
+    private static final String APP_ID = "KG26JX-3T3LTU3VTP";
+
+
+    private static RequestQueue queue; // Add this line for the RequestQueue
 
     public interface APIResponseListener {
         void onResponse(String response);
     }
 
-    public static void calculateLimit(String limitQuery, APIResponseListener listener) {
-        String url = BASE_URL + "?input=" + limitQuery + "&format=plaintext&output=JSON&appid=" + API_KEY;
-
-        new APIRequestTask(listener).execute(url);
+    // Initialize the RequestQueue
+    public static void init(Context context) {
+        if (queue == null) {
+            queue = Volley.newRequestQueue(context.getApplicationContext());
+        }
     }
 
-    private static class APIRequestTask extends AsyncTask<String, Void, String> {
-        private APIResponseListener listener;
+    public static void calculateLimit(String input, APIResponseListener listener) {
+        String url = BASE_URL + "input=" + Uri.encode(input) + "&format=plaintext&output=JSON&appid=" + APP_ID;
 
-        public APIRequestTask(APIResponseListener listener) {
-            this.listener = listener;
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection connection = null;
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
             try {
-                URL url = new URL(urls[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response += line;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-            }
-            return response;
-        }
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONArray podsArray = jsonResponse.getJSONObject("queryresult").getJSONArray("pods");
 
-        @Override
-        protected void onPostExecute(String response) {
-            if (response.isEmpty()) {
-                listener.onResponse("");
-            } else {
-                listener.onResponse(response);
+                String result = "Not found";
+
+                // Iterate through the pods array to find the pod with title "Limit"
+                for (int i = 0; i < podsArray.length(); i++) {
+                    JSONObject pod = podsArray.getJSONObject(i);
+                    if ("Limit".equals(pod.getString("title"))) {
+                        result = pod.getJSONArray("subpods").getJSONObject(0).getString("plaintext");
+                        break; // Break the loop once we've found the result
+                    }
+                }
+
+                // Handle infinity symbols
+                if (result.contains("â")) {
+                    result = result.replace("â", "infinity");
+                }
+
+                listener.onResponse(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                listener.onResponse("Error parsing the result.");
             }
-        }
+        }, error -> listener.onResponse("API request failed."));
+
+        queue.add(request);
     }
+
+
+
 }

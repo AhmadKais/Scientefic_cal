@@ -20,6 +20,7 @@ public class OpeningActivity extends AppCompatActivity {
         Button goToUnitConverter = findViewById(R.id.gotounit);
         Button goToMatrix = findViewById(R.id.gotomatrix);
 
+        WolframAlphaAPI.init(this);
 
 
         goToCalcButton.setOnClickListener(new View.OnClickListener() {

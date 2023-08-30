@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_background"
+    android:background="@drawable/bg_mat"
     tools:context=".LimitActivity">
 
     <RelativeLayout
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:hint="Enter Function"
-            android:textColorHint="@color/greyAccent"
+            android:textColorHint="@color/black"
             android:textSize="30sp"
             android:textColor="@color/white"/>
 
@@ -30,7 +30,7 @@
             android:layout_height="75dp"
             android:layout_below="@id/functionInput"
             android:hint="Enter Point"
-            android:textColorHint="@color/greyAccent"
+            android:textColorHint="@color/black"
             android:textSize="30sp"
             android:textColor="@color/white"/>
 
@@ -40,7 +40,7 @@
             android:layout_height="64dp"
             android:layout_below="@id/pointInput"
             android:hint="Enter Variable (e.g., x)"
-            android:textColorHint="@color/greyAccent"
+            android:textColorHint="@color/black"
             android:textSize="30sp"
             android:textColor="@color/white"/>
 
@@ -66,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/calculateButton"
+            android:textColor="@color/black"
             android:layout_centerHorizontal="true"
             android:textSize="40sp"/>
 
