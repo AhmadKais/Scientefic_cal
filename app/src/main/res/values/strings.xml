@@ -57,5 +57,7 @@
         <item>A * B</item>
         <item>Inverse of A</item>
         <item>Inverse of B</item>
+        <item>Transpose A</item>  <!-- New Entry -->
+        <item>Transpose B</item>  <!-- New Entry -->
     </string-array>
 </resources>

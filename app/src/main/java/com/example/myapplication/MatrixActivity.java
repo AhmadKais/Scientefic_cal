@@ -89,11 +89,36 @@ public class MatrixActivity extends AppCompatActivity {
                     float[][] invertedMatrixB = invertMatrix(originalMatrixB);
                     resultText.setText("Inverted Matrix B:\n" + matrixToString(invertedMatrixB));
                     break;
+                case 3: // Transpose A
+                    float[][] matrixAA = retrieveMatrixValues(matrixAGrid);
+                    float[][] transposedMatrixA = transposeMatrix(matrixAA);
+                    resultText.setText("Transposed Matrix A:\n" + matrixToString(transposedMatrixA));
+                    break;
+                case 4: // Transpose B
+                    float[][] matrixBB = retrieveMatrixValues(matrixBGrid);
+                    float[][] transposedMatrixB = transposeMatrix(matrixBB);
+                    resultText.setText("Transposed Matrix B:\n" + matrixToString(transposedMatrixB));
+                    break;
             }
         } catch (MatrixOperationFailedException e) {
             resultText.setText("Matrix operation failed: " + e.getMessage());
         }
     }
+    private float[][] transposeMatrix(float[][] matrix) {
+        int rows = matrix.length;
+        int columns = matrix[0].length;
+
+        float[][] transposedMatrix = new float[columns][rows];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                transposedMatrix[j][i] = matrix[i][j];
+            }
+        }
+
+        return transposedMatrix;
+    }
+
 
     // Method to retrieve matrix values from GridLayout
     private float[][] retrieveMatrixValues(GridLayout gridLayout) {
