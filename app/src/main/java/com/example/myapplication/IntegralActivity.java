@@ -69,7 +69,7 @@ public class IntegralActivity extends AppCompatActivity {
 
             List<Entry> integralEntries = new ArrayList<>();
             double integralValue = 0;
-            double stepSize = 0.01;
+            double stepSize = 0.001;
             double previousY = expression.setVariable("x", lowerLimit).evaluate();
             integralValue += previousY * stepSize / 2.0;
             for (double x = lowerLimit + stepSize; x <= upperLimit; x += stepSize) {
@@ -99,11 +99,31 @@ public class IntegralActivity extends AppCompatActivity {
     }
 
     private String getAntiderivative(String function) {
-        // For now, handle the case for f(x) = x only
-        if (function.equals("x")) {
-            return "(x^2)/2";
-        } else {
-            return "Antiderivative not available for this function"; // Placeholder for other functions
+        switch (function) {
+            case "x":
+                return "(x^2)/2";
+            case "x^2":
+                return "(x^3)/3";
+            case "x^3":
+                return "(x^4)/4";
+            case "sin(x)":
+                return "-cos(x)";
+            case "cos(x)":
+                return "sin(x)";
+            case "tan(x)":
+                return "-ln(|cos(x)|)";
+            case "sec^2(x)":
+                return "tan(x)";
+            case "e^x":
+                return "e^x";
+            case "ln(x)":
+                return "x * ln(x) - x";
+            case "1/x": // This is the natural logarithm (ln(x))
+                return "ln(|x|)";
+            // You can add more functions here as needed
+            default:
+                return "Antiderivative not available for this function";
         }
     }
+
 }

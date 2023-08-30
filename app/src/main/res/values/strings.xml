@@ -53,4 +53,9 @@
     <string name="upper_limit">Upper limit</string>
     <string name="solve">Solve</string>
     <string name="delete_desc">Erase</string>
+    <string-array name="matrix_operations">
+        <item>A * B</item>
+        <item>Inverse of A</item>
+        <item>Inverse of B</item>
+    </string-array>
 </resources>

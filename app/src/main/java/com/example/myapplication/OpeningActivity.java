@@ -18,6 +18,7 @@ public class OpeningActivity extends AppCompatActivity {
         Button goToLimitDerivativeButton = findViewById(R.id.gotoderivative);
         Button goToLimitIntegralButton = findViewById(R.id.gotointegral);
         Button goToUnitConverter = findViewById(R.id.gotounit);
+        Button goToMatrix = findViewById(R.id.gotomatrix);
 
 
 
@@ -52,6 +53,12 @@ public class OpeningActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 changeActivity(com.example.myapplication.ConverterActivity.class);
+            }
+        });
+        goToMatrix.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(com.example.myapplication.MatrixActivity.class);
             }
         });
     }

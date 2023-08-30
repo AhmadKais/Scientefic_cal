@@ -53,7 +53,6 @@ public class DerivativeActivity extends AppCompatActivity {
         }
 
         try {
-
             Expression expression = new ExpressionBuilder(function)
                     .variable("x")
                     .build();
@@ -65,16 +64,20 @@ public class DerivativeActivity extends AppCompatActivity {
                 expression.setVariable("x", x);
                 originalEntries.add(new Entry((float) x, (float) expression.evaluate()));
 
-                double h = 0.0001; // Small increment for numerical differentiation
-                double derivative = (expression.setVariable("x", x + h).evaluate() - expression.setVariable("x", x - h).evaluate()) / (2 * h);
+                double derivative;
+                double analyticalDerivative = calculateAnalyticalDerivative(function, x);
+                if (!Double.isNaN(analyticalDerivative)) {
+                    derivative = analyticalDerivative;
+                } else {
+                    double h = 0.0001;
+                    derivative = (expression.setVariable("x", x + h).evaluate() - expression.setVariable("x", x - h).evaluate()) / (2 * h);
+                }
+
                 derivativeEntries.add(new Entry((float) x, (float) derivative));
             }
 
-            StringBuilder derivativeText = new StringBuilder("Derivative Values:\n");
-            for (Entry entry : derivativeEntries) {
-                derivativeText.append("x = ").append(entry.getX()).append(", f'(x) = ").append(entry.getY()).append("\n");
-            }
-            derivativeTextView.setText(derivativeText.toString());
+            String derivativeFunction = getDerivativeFunction(function);
+            derivativeTextView.setText("f'(x) = " + derivativeFunction);
 
             updateChart(originalChart, originalEntries, "f(x)", Color.BLUE);
             updateChart(derivativeChart, derivativeEntries, "f'(x)", Color.GREEN);
@@ -83,6 +86,41 @@ public class DerivativeActivity extends AppCompatActivity {
             clearCharts();
         }
     }
+    private String getDerivativeFunction(String function) {
+        switch (function.trim()) {
+            case "x":
+                return "1";
+            case "sin(x)":
+                return "cos(x)";
+            case "cos(x)":
+                return "-sin(x)";
+            case "tan(x)":
+                return "sec^2(x)";
+            case "ln(x)":
+                return "1/x";
+            case "log(x)":
+                return "1/(x * ln(10))";  // Assuming base 10
+            case "e^x":
+                return "e^x";
+            case "sqrt(x)":
+                return "1/(2 * sqrt(x))";
+            case "x^2":
+                return "2x";
+            case "x^3":
+                return "3x^2";
+            // Add more functions as needed...
+            default:
+                return "Not Available";
+        }
+    }
+
+
+
+
+
+
+
+
 
 
     private void configureChart(LineChart chart) {
@@ -113,4 +151,33 @@ public class DerivativeActivity extends AppCompatActivity {
         originalChart.clear();
         derivativeChart.clear();
     }
+    private double calculateAnalyticalDerivative(String function, double x) {
+        switch (function.trim()) {
+            case "x":
+                return 1;
+            case "sin(x)":
+                return Math.cos(x);
+            case "cos(x)":
+                return -Math.sin(x);
+            case "tan(x)":
+                return 1 / (Math.cos(x) * Math.cos(x)); // sec^2(x)
+            case "ln(x)":
+                return 1 / x;
+            case "log(x)":  // Assuming base 10
+                return 1 / (x * Math.log(10));
+            case "e^x":
+                return Math.exp(x);
+            case "sqrt(x)":
+                return 0.5 / Math.sqrt(x);
+            case "x^2":
+                return 2 * x;
+            case "x^3":
+                return 3 * x * x;
+            // Add more functions as needed...
+            default:
+                return Double.NaN; // Indicate that the derivative is not available
+        }
+    }
+
+
 }
