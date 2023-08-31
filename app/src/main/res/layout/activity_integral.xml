@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_background"
+    android:background="@drawable/bg_mat"
     tools:context=".IntegralActivity">
 
     <EditText
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textColorHint="@color/greyAccent"
+        android:textColorHint="@color/black"
         android:textSize="25sp"
         android:textColor="@color/white"/>
 
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toStartOf="@id/upperLimitInput"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintHorizontal_bias="0.5"
-        android:textColorHint="@color/greyAccent"
+        android:textColorHint="@color/black"
         android:textSize="20sp"
         android:textColor="@color/white"/>
 
@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintHorizontal_bias="0.5"
-        android:textColorHint="@color/greyAccent"
+        android:textColorHint="@color/black"
         android:textSize="20sp"
         android:textColor="@color/white"/>
 
