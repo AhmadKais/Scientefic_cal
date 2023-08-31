@@ -65,6 +65,138 @@ public class WolframAlphaAPI {
 
         queue.add(request);
     }
+    public static void calculateDerivative(String function, APIResponseListener successListener, APIResponseListener failureListener) {
+        String input = "derivative of " + function;
+        String url = BASE_URL + "input=" + Uri.encode(input) + "&format=plaintext&output=JSON&appid=" + APP_ID;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONArray podsArray = jsonResponse.getJSONObject("queryresult").getJSONArray("pods");
+
+                String result = "Not found";
+
+                for (int i = 0; i < podsArray.length(); i++) {
+                    JSONObject pod = podsArray.getJSONObject(i);
+                    if ("Derivative".equals(pod.getString("title"))) { // Adjust this title to match WolframAlpha's result title for derivative.
+                        result = pod.getJSONArray("subpods").getJSONObject(0).getString("plaintext");
+                        break;
+                    }
+                }
+
+                successListener.onResponse(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                failureListener.onResponse("Error parsing the result.");
+            }
+        }, error -> failureListener.onResponse("API request failed."));
+
+        queue.add(request);
+    }
+    public static void calculateIntegral(String function, double lowerLimit, double upperLimit, APIResponseListener successListener, APIResponseListener failureListener) {
+        String lowerLimitStr = (lowerLimit == Double.POSITIVE_INFINITY) ? "inf" :
+                (lowerLimit == Double.NEGATIVE_INFINITY) ? "-inf" :
+                        String.valueOf(lowerLimit);
+
+        String upperLimitStr = (upperLimit == Double.POSITIVE_INFINITY) ? "inf" :
+                (upperLimit == Double.NEGATIVE_INFINITY) ? "-inf" :
+                        String.valueOf(upperLimit);
+
+        String input = String.format("integral of %s from %s to %s", function, lowerLimitStr, upperLimitStr);
+        String url = BASE_URL + "input=" + Uri.encode(input) + "&format=plaintext&output=JSON&appid=" + APP_ID;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONArray podsArray = jsonResponse.getJSONObject("queryresult").getJSONArray("pods");
+
+                String result = "Not found";
+                System.out.println(response);
+
+                for (int i = 0; i < podsArray.length(); i++) {
+                    JSONObject pod = podsArray.getJSONObject(i);
+                    if ("Definite integral".equals(pod.getString("title"))) {
+                        result = pod.getJSONArray("subpods").getJSONObject(0).getString("plaintext");
+                        break;
+                    }
+                }
+
+                successListener.onResponse(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                failureListener.onResponse("Error parsing the result.");
+            }
+        }, error -> failureListener.onResponse("API request failed."));
+
+        queue.add(request);
+    }
+    public static void calculateGeneralIntegral(String function, APIResponseListener successListener, APIResponseListener failureListener) {
+        String input = String.format("integral of %s", function);
+        String url = BASE_URL + "input=" + Uri.encode(input) + "&format=plaintext&output=JSON&appid=" + APP_ID;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONArray podsArray = jsonResponse.getJSONObject("queryresult").getJSONArray("pods");
+
+                String result = "Not found";
+
+                for (int i = 0; i < podsArray.length(); i++) {
+                    JSONObject pod = podsArray.getJSONObject(i);
+                    if ("Indefinite integral".equals(pod.getString("title")) || "Definite integral".equals(pod.getString("title"))) {
+                        result = pod.getJSONArray("subpods").getJSONObject(0).getString("plaintext");
+                        break;
+                    }
+                }
+
+                successListener.onResponse(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                failureListener.onResponse("Error parsing the result.");
+            }
+        }, error -> failureListener.onResponse("API request failed."));
+
+        queue.add(request);
+    }
+
+    public static void checkConvergence(String function, double lowerLimit, double upperLimit, APIResponseListener successListener, APIResponseListener failureListener) {
+        // Handling infinity in input for WolframAlpha's query language
+        String lowerLimitStr = (lowerLimit == Double.POSITIVE_INFINITY) ? "infinity" :
+                (lowerLimit == Double.NEGATIVE_INFINITY) ? "-infinity" :
+                        String.valueOf(lowerLimit);
+
+        String upperLimitStr = (upperLimit == Double.POSITIVE_INFINITY) ? "infinity" :
+                (upperLimit == Double.NEGATIVE_INFINITY) ? "-infinity" :
+                        String.valueOf(upperLimit);
+
+        // Ensure the proper phrasing for the query
+        String input = String.format("Does the integral from %s to %s of %s dx converge?", lowerLimitStr, upperLimitStr, function);
+
+        String url = BASE_URL + "input=" + Uri.encode(input) + "&format=plaintext&output=JSON&appid=" + APP_ID;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONArray podsArray = jsonResponse.getJSONObject("queryresult").getJSONArray("pods");
+
+                String result = "Not found";
+                for (int i = 0; i < podsArray.length(); i++) {
+                    JSONObject pod = podsArray.getJSONObject(i);
+                    if ("Result".equals(pod.getString("title"))) {
+                        result = pod.getJSONArray("subpods").getJSONObject(0).getString("plaintext");
+                        break;
+                    }
+                }
+
+                successListener.onResponse(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                failureListener.onResponse("Error parsing the result.");
+            }
+        }, error -> failureListener.onResponse("API request failed."));
+
+        queue.add(request);
+    }
 
 
 

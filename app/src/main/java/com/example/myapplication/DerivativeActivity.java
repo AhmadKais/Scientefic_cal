@@ -63,29 +63,51 @@ public class DerivativeActivity extends AppCompatActivity {
             for (double x = -10.0; x <= 10.0; x += 0.1) {
                 expression.setVariable("x", x);
                 originalEntries.add(new Entry((float) x, (float) expression.evaluate()));
-
-                double derivative;
-                double analyticalDerivative = calculateAnalyticalDerivative(function, x);
-                if (!Double.isNaN(analyticalDerivative)) {
-                    derivative = analyticalDerivative;
-                } else {
-                    double h = 0.0001;
-                    derivative = (expression.setVariable("x", x + h).evaluate() - expression.setVariable("x", x - h).evaluate()) / (2 * h);
-                }
-
-                derivativeEntries.add(new Entry((float) x, (float) derivative));
             }
 
-            String derivativeFunction = getDerivativeFunction(function);
-            derivativeTextView.setText("f'(x) = " + derivativeFunction);
+            WolframAlphaAPI.calculateDerivative(function, response -> {
+                String derivativeFunction = response; // Response from WolframAlpha should be the derivative.
+                derivativeTextView.setText("f'(x) = " + derivativeFunction);
 
-            updateChart(originalChart, originalEntries, "f(x)", Color.BLUE);
-            updateChart(derivativeChart, derivativeEntries, "f'(x)", Color.GREEN);
+                try {
+                    Expression derivativeExpression = new ExpressionBuilder(derivativeFunction)
+                            .variable("x")
+                            .build();
+
+                    for (double x = -10.0; x <= 10.0; x += 0.1) {
+                        derivativeExpression.setVariable("x", x);
+                        derivativeEntries.add(new Entry((float) x, (float) derivativeExpression.evaluate()));
+                    }
+
+                } catch (Exception e) {
+                    // If there's an issue in evaluating WolframAlpha's response, resort to the numerical method
+                    for (double x = -10.0; x <= 10.0; x += 0.1) {
+                        double h = 0.0001;
+                        double derivative = (expression.setVariable("x", x + h).evaluate() - expression.setVariable("x", x - h).evaluate()) / (2 * h);
+                        derivativeEntries.add(new Entry((float) x, (float) derivative));
+                    }
+                }
+
+                updateChart(originalChart, originalEntries, "f(x)", Color.BLUE);
+                updateChart(derivativeChart, derivativeEntries, "f'(x)", Color.GREEN);
+
+            }, error -> {
+                // On WolframAlpha error, resort to the numerical method
+                for (double x = -10.0; x <= 10.0; x += 0.1) {
+                    double h = 0.0001;
+                    double derivative = (expression.setVariable("x", x + h).evaluate() - expression.setVariable("x", x - h).evaluate()) / (2 * h);
+                    derivativeEntries.add(new Entry((float) x, (float) derivative));
+                }
+
+                updateChart(originalChart, originalEntries, "f(x)", Color.BLUE);
+                updateChart(derivativeChart, derivativeEntries, "f'(x)", Color.GREEN);
+            });
 
         } catch (Exception e) {
             clearCharts();
         }
     }
+
     private String getDerivativeFunction(String function) {
         switch (function.trim()) {
             case "x":
