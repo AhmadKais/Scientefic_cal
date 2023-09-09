@@ -19,6 +19,7 @@ public class OpeningActivity extends AppCompatActivity {
         Button goToLimitIntegralButton = findViewById(R.id.gotointegral);
         Button goToUnitConverter = findViewById(R.id.gotounit);
         Button goToMatrix = findViewById(R.id.gotomatrix);
+        Button gotoAnimation = findViewById(R.id.gotoanimation);
 
         WolframAlphaAPI.init(this);
 
@@ -35,6 +36,10 @@ public class OpeningActivity extends AppCompatActivity {
             public void onClick(View v) {
                 changeActivity(LimitActivity.class);
             }
+        });
+        gotoAnimation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {changeActivity(AnimationActivity.class);}
         });
         goToLimitDerivativeButton.setOnClickListener(new View.OnClickListener() {
             @Override
