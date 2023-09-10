@@ -14,7 +14,7 @@ public class MinHeap extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_minheap);
+        setContentView(R.layout.activity_min_heap);
 
         minHeapView = findViewById(R.id.minHeapView);
         insertValueEditText = findViewById(R.id.insertValueEditText);

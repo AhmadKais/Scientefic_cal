@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class MinHeapView extends View {
     private ArrayList<Integer> heap = new ArrayList<>();
-    private Paint paint, edgePaint;
+    private Paint nodePaint, textPaint, edgePaint;
     private static final int NODE_RADIUS = 50;
 
     public MinHeapView(Context context) {
@@ -29,56 +29,67 @@ public class MinHeapView extends View {
     }
 
     private void init() {
-        paint = new Paint();
+        nodePaint = new Paint();
+        textPaint = new Paint();
         edgePaint = new Paint();
 
-        paint.setAntiAlias(true);
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(30);
+        nodePaint.setAntiAlias(true);
+        nodePaint.setColor(Color.BLACK);
+
+        textPaint.setAntiAlias(true);
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(30);
 
         edgePaint.setAntiAlias(true);
         edgePaint.setColor(Color.GRAY);
         edgePaint.setStrokeWidth(5f);
     }
 
-    @Override
+
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (!heap.isEmpty()) {
-            drawHeap(canvas, 0, getWidth() / 2, 50);
+            drawHeap(canvas, 0, getWidth() / 2, 50, getWidth() / 3.5, 0.4, 0);
         }
     }
-    private void drawHeap(Canvas canvas, int index, int x, int y) {
-        if (index >= heap.size()) return;
 
-        // Draw the current node
-        canvas.drawCircle(x, y, NODE_RADIUS, paint);
-        float textWidth = paint.measureText(Integer.toString(heap.get(index)));
-        canvas.drawText(Integer.toString(heap.get(index)), x - (textWidth / 2), y + 10, paint);
+    private void drawHeap(Canvas canvas, int index, int x, int y, double offset, double depthFactor, int depth) {
+        int adjustedRadius = NODE_RADIUS - (depth > 2 ? (depth - 2) * 15 : 0);
+        adjustedRadius = Math.max(adjustedRadius, 20);
+
+        double newOffset = depth < 3 ? offset * depthFactor : offset;
+
+        canvas.drawCircle(x, y, adjustedRadius, nodePaint);
+        float textWidth = textPaint.measureText(Integer.toString(heap.get(index)));
+        canvas.drawText(Integer.toString(heap.get(index)), x - (textWidth / 2), y + 10, textPaint);
 
         int leftChildIndex = 2 * index + 1;
         int rightChildIndex = 2 * index + 2;
 
-        int xOffset = 100;  // Adjust as needed for spacing
-
-        // Recursively draw the left child
         if (leftChildIndex < heap.size()) {
-            canvas.drawLine(x, y + NODE_RADIUS, x - xOffset, y + 3 * NODE_RADIUS, edgePaint);
-            drawHeap(canvas, leftChildIndex, x - xOffset, y + 100);
+            canvas.drawLine(x, y + adjustedRadius, (float) (x - offset), y + 100 + adjustedRadius, edgePaint);
+            drawHeap(canvas, leftChildIndex, (int) (x - offset), y + 100 + (2 * adjustedRadius), newOffset, depthFactor, depth + 1);
         }
 
-        // Recursively draw the right child
         if (rightChildIndex < heap.size()) {
-            canvas.drawLine(x, y + NODE_RADIUS, x + xOffset, y + 3 * NODE_RADIUS, edgePaint);
-            drawHeap(canvas, rightChildIndex, x + xOffset, y + 100);
+            canvas.drawLine(x, y + adjustedRadius, (float) (x + offset), y + 100 + adjustedRadius, edgePaint);
+            drawHeap(canvas, rightChildIndex, (int) (x + offset), y + 100 + (2 * adjustedRadius), newOffset, depthFactor, depth + 1);
         }
     }
+
+
+
 
     public void insert(int value) {
+        if (heap.contains(value)) {
+            // Value already exists, you can either return or display a message
+            return;
+        }
         heap.add(value);
         bubbleUp(heap.size() - 1);
-        invalidate();
+        invalidate();  // Redraw the view.
     }
+
 
     private void bubbleUp(int index) {
         if (index == 0) return;
@@ -100,7 +111,7 @@ public class MinHeapView extends View {
             heap.set(0, heap.remove(heap.size() - 1));
             bubbleDown(0);
         }
-        invalidate();
+        invalidate();  // Redraw the view.
     }
 
     private void bubbleDown(int index) {
