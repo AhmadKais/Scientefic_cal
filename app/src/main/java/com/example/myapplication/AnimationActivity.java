@@ -15,11 +15,27 @@ public class AnimationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_animation);
 
         Button Avlbutton = findViewById(R.id.gotoAVL);
+        Button binHeap = findViewById(R.id.gotoHeap);
+        Button splayButton = findViewById(R.id.gotoSplay);
 
         Avlbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeActivity(com.example.myapplication.AvlActivity.class);
+            }
+        });
+
+        binHeap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(com.example.myapplication.MinHeap.class);
+            }
+        });
+
+        splayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(com.example.myapplication.SplayTreeActivity.class);
             }
         });
     }

@@ -12,6 +12,12 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".SplayTreeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".min_heap"
+            android:exported="false" />
+        <activity
             android:name=".AvlActivity"
             android:exported="false" />
         <activity
