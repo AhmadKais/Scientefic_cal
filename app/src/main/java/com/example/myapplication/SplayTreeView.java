@@ -49,20 +49,22 @@ public class SplayTreeView extends View {
     private void drawNode(Canvas canvas, SplayTree.Node node, int x, int y, int parentX) {
         if (node == null) return;
 
+        // Set color to draw the line connecting to parent (assuming you want the edges in black)
+        mPaint.setColor(Color.BLACK);
+
         // Draw the line connecting to parent
         if (node.parent != null) {
             canvas.drawLine(x, y, parentX, y - LEVEL_SPACING + NODE_RADIUS, mPaint);
         }
 
-        mPaint.setColor(Color.BLACK);
+        // Draw the node (circle) in black color
         canvas.drawCircle(x, y, NODE_RADIUS, mPaint);
 
-        // Now, change the color for the text
-        mPaint.setColor(Color.WHITE);  // Set the text color to WHITE
+        // Set the text color to WHITE for drawing the node's data
+        mPaint.setColor(Color.WHITE);
 
-        // Center the text vertically inside the node.
+        // Center the text vertically inside the node
         canvas.drawText(String.valueOf(node.data), x, y + (mPaint.getTextSize() / 2) - 10, mPaint);
-
 
         // Recursively draw children
         if (node.left != null) {
@@ -72,6 +74,7 @@ public class SplayTreeView extends View {
             drawNode(canvas, node.right, x + NODE_SPACING, y + LEVEL_SPACING, x);
         }
     }
+
     public void insert(int value) {
         mTree.insert(value);
         invalidate();  // Redraw the view
