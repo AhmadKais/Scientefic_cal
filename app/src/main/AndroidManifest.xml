@@ -12,6 +12,9 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".CartesianTreeActivity"
+            android:exported="false" />
+        <activity
             android:name=".MinHeap"
             android:exported="false" />
         <activity

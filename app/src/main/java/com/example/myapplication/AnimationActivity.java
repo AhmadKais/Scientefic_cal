@@ -17,6 +17,14 @@ public class AnimationActivity extends AppCompatActivity {
         Button Avlbutton = findViewById(R.id.gotoAVL);
         Button binHeap = findViewById(R.id.gotoHeap);
         Button splayButton = findViewById(R.id.gotoSplay);
+        Button cartButton = findViewById(R.id.gotoCartesiantree);
+
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(com.example.myapplication.CartesianTreeActivity.class);
+            }
+        });
 
         Avlbutton.setOnClickListener(new View.OnClickListener() {
             @Override
