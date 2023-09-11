@@ -8,43 +8,48 @@
         android:id="@+id/avlTreeView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/insert"
+        android:layout_below="@+id/layoutHorizontal"
         android:layout_marginTop="16dp" />
 
-    <Button
-        android:id="@+id/insert"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layoutHorizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="36dp"
-        android:text="Insert" />
+        android:orientation="horizontal"
+        android:weightSum="3">
 
-    <Button
-        android:id="@+id/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="16dp"
-        android:text="Delete" />
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:background="@drawable/button_background"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textColor="@color/tanAccent"
+            android:textSize="28sp" />
 
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="wrap_content"
-        android:layout_height="61dp"
-        android:layout_above="@+id/avlTreeView"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toStartOf="@+id/insert"
-        android:layout_toEndOf="@+id/delete"
-        android:ems="10"
-        android:hint="Value"
-        android:inputType="text" />
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="0dp"
+            android:layout_height="58dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Value"
+            android:inputType="numberSigned|numberDecimal" />
+
+        <Button
+            android:id="@+id/insert"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="70dp"
+            android:background="@drawable/button_background"
+            android:text="Insert"
+            android:textAllCaps="false"
+            android:textColor="@color/tanAccent"
+            android:textSize="28sp" />
+    </LinearLayout>
 
 </RelativeLayout>

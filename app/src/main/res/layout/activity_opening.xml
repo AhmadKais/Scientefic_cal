@@ -83,12 +83,14 @@
         android:id="@+id/gotounit"
         android:layout_width="197dp"
         android:layout_height="75dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/button_background"
         android:text="Unit Converter"
         android:textAllCaps="false"
         android:textColor="@color/tanAccent"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gotointegral" />
 
@@ -101,9 +103,13 @@
 
     <Button
         android:id="@+id/gotoanimation"
-        android:layout_width="156dp"
-        android:layout_height="106dp"
+        android:layout_width="183dp"
+        android:layout_height="111dp"
+        android:background="@drawable/button_background"
         android:text="Data Structure Animation"
+        android:textAllCaps="false"
+        android:textColor="@color/tanAccent"
+        android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

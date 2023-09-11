@@ -23,7 +23,11 @@
             android:id="@+id/insertButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Insert" />
+            android:text="Insert"
+            android:background="@drawable/button_background"
+            android:textAllCaps="false"
+            android:textColor="@color/tanAccent"
+            android:textSize="28sp"/>
     </LinearLayout>
 
     <com.example.myapplication.CartesianTreeView
