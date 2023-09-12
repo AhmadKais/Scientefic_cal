@@ -229,6 +229,15 @@ public class SplayTree {
             y.left.parent = y;
         }
     }
+    public Node find(int key) {
+        Node result = searchTreeHelper(root, key);
+        if (result != null) {
+            splay(result);  // Splay the found node to the top
+        }
+        return result;
+    }
+
+
 
     private Node minimum(Node root) {
         while (root.left != null) {

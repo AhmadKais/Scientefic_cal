@@ -6,11 +6,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MinHeapView extends View {
     private ArrayList<Integer> heap = new ArrayList<>();
     private Paint nodePaint, textPaint, edgePaint;
+    private HashSet<Integer> changedIndices = new HashSet<>();
     private static final int NODE_RADIUS = 50;
 
     public MinHeapView(Context context) {
@@ -45,19 +48,23 @@ public class MinHeapView extends View {
         edgePaint.setStrokeWidth(5f);
     }
 
-
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (!heap.isEmpty()) {
             drawHeap(canvas, 0, getWidth() / 2, 50, getWidth() / 3.5, 0.4, 0);
         }
+        changedIndices.clear();
     }
 
     private void drawHeap(Canvas canvas, int index, int x, int y, double offset, double depthFactor, int depth) {
         int adjustedRadius = NODE_RADIUS - (depth > 2 ? (depth - 2) * 15 : 0);
         adjustedRadius = Math.max(adjustedRadius, 20);
 
-        double newOffset = depth < 3 ? offset * depthFactor : offset;
+        if (changedIndices.contains(index)) {
+            nodePaint.setColor(Color.RED);
+        } else {
+            nodePaint.setColor(Color.BLACK);
+        }
 
         canvas.drawCircle(x, y, adjustedRadius, nodePaint);
         float textWidth = textPaint.measureText(Integer.toString(heap.get(index)));
@@ -65,6 +72,8 @@ public class MinHeapView extends View {
 
         int leftChildIndex = 2 * index + 1;
         int rightChildIndex = 2 * index + 2;
+
+        double newOffset = depth < 3 ? offset * depthFactor : offset;
 
         if (leftChildIndex < heap.size()) {
             canvas.drawLine(x, y + adjustedRadius, (float) (x - offset), y + 100 + adjustedRadius, edgePaint);
@@ -77,25 +86,22 @@ public class MinHeapView extends View {
         }
     }
 
-
-
-
     public void insert(int value) {
         if (heap.contains(value)) {
-            // Value already exists, you can either return or display a message
             return;
         }
         heap.add(value);
         bubbleUp(heap.size() - 1);
-        invalidate();  // Redraw the view.
+        invalidate();
     }
-
 
     private void bubbleUp(int index) {
         if (index == 0) return;
         int parentIndex = (index - 1) / 2;
         if (heap.get(index) < heap.get(parentIndex)) {
-            // Swap values
+            changedIndices.add(index);
+            changedIndices.add(parentIndex);
+
             int temp = heap.get(index);
             heap.set(index, heap.get(parentIndex));
             heap.set(parentIndex, temp);
@@ -111,7 +117,7 @@ public class MinHeapView extends View {
             heap.set(0, heap.remove(heap.size() - 1));
             bubbleDown(0);
         }
-        invalidate();  // Redraw the view.
+        invalidate();
     }
 
     private void bubbleDown(int index) {
@@ -127,7 +133,9 @@ public class MinHeapView extends View {
             smallest = rightChildIndex;
         }
         if (smallest != index) {
-            // Swap values
+            changedIndices.add(index);
+            changedIndices.add(smallest);
+
             int temp = heap.get(index);
             heap.set(index, heap.get(smallest));
             heap.set(smallest, temp);

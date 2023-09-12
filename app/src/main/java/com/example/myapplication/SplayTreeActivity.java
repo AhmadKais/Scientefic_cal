@@ -20,6 +20,23 @@ public class SplayTreeActivity extends AppCompatActivity {
         Button buttonInsert = findViewById(R.id.buttonInsert);
         Button buttonDelete = findViewById(R.id.buttonDelete);
         SplayTreeView splayTreeView = findViewById(R.id.splayTreeView);  // Initialize SplayTreeView
+        Button buttonFind = findViewById(R.id.buttonFind);
+        buttonFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    int value = Integer.parseInt(editTextValue.getText().toString());
+                    boolean found = splayTreeView.find(value);
+
+                    if (!found) {
+                        // You can show a Toast message to the user indicating the value was not found
+                    }
+                } catch (NumberFormatException e) {
+                    // You can handle this error or show a Toast to the user
+                }
+            }
+        });
+
 
         buttonInsert.setOnClickListener(new View.OnClickListener() {
             @Override

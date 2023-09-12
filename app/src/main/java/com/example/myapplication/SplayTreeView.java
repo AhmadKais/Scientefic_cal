@@ -89,5 +89,14 @@ public class SplayTreeView extends View {
         this.mTree = tree;
         invalidate();  // Cause the view to redraw
     }
+    public boolean find(int value) {
+        SplayTree.Node result = mTree.find(value);
+        if (result != null) {
+            invalidate();  // Redraw the view to show the splayed tree after the find operation
+            return true;
+        }
+        return false;
+    }
+
 }
 
